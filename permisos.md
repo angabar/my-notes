@@ -1,0 +1,72 @@
+# Permisos
+
+Los permisos en Linux se dividen en tres, usuarios, gurpos y el resto. El usuario es aquel que tiene como propiedad un archivo o directorio, el grupo es el conjunto de usuarios y el resto es el conjunto de usuarios que acceden al sistema sin pertenecer a un grupo ni ser propietarios del archivo o directorio.
+
+Además de estos existen también otros usuarios creados por el sistema para el mantenimiento del mismo así como para tareas de administración.
+
+Los usuarios vienen definidos en `/etc/passwd`
+
+Los grupos vienen definidos en `/etc/group`
+
+**Simbología**
+
+Para representar estos permisos Linux define los siguientes símbolos:
+
+- `-` Un archivo normal
+- `d` Un directorio
+- `l` Un enlace simbólico
+- `c` Un archivo especial
+- `b` Un bloque de archivos especiales
+
+| **Usuario** | **Grupo** | **El resto** |
+| --- | --- | --- |
+| `rwx` | `rwx` | `rwx`  |
+
+| **Comando** | **Archivo** | **Directorio** |
+| --- | --- | --- |
+| `r` | Puede ser abierto o leído | Se puede listar el contenido pero necesita del permiso adicional de `x` para ver la información de cada archivo |
+| `w` | Puede ser escrito o modificado pero no puede ser borrado o renombrado salvo que `w` se defina en el directorio que lo contiene | Se pueden borrar, modificar los archivos del directorio siempre que `x` esté definido en este |
+| `x` | Permite la ejecución del archivo como programa, si es un script, tendrá que tener permisos de `r` también | Permite el acceso al directorio y poder realizar cualquier operación sobre este |
+
+`chmod`
+
+Para definir los permisos de un archivo o directorio, usamos el comando `chmod` al cual le podemos pasar notación en octal o en formato simbólico.
+
+**Octal**
+
+Usa la numeración en base 8 para definir los permisos, los diferentes valores posibles se definen en la siguiente tabla.
+
+| 0 | 000 | `---` |
+| --- | --- | --- |
+| 1 | 001 | `--x` |
+| 2 | 010 | `-w-` |
+| 3 | 011 | `-wx` |
+| 4 | 100 | `r--` |
+| 5 | 101 | `r-x` |
+| 6 | 110 | `rw-` |
+| 7 | 111 | `rwx` |
+
+```bash
+// rw------x
+chmod 601
+
+// rwx-w---x
+chmod 721
+```
+
+**Simbólico**
+
+Otra forma más clara de definir los permisos es usando la notación simbólica, en esta tenemos 4 formas de definir la entidad sobre la que vamos a definir los permisos.
+
+- `u` Usuario
+- `g` Grupo de usuarios
+- `o` El resto
+- `a` Todos, es decir `ugo`
+
+Tan solo tenemos que unir esto a los permisos que queremos añadir `+` quitar `-` o definir exatcamente esos `=`
+
+```bash
+chmod u+x
+
+chmod u-x,o+r
+```
