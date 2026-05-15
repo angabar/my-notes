@@ -107,3 +107,35 @@ Si por ejemplo queremos como usuario normal sin permisos modificar la contraseñ
 `setgid`
 
 Este comando tiene dos posibles definiciones, cuando actua sobre un fichero y cuando actua sobre un directorio.
+
+- Sobre un archivo: Hace que cuando se ejecute el programa lo haga usando los permisos del grupo del archivo, no del grupo del usuario, permitiendo dar más libertad de acción al usuario, pero sin llegar a otorgarle permisos de administrador. Por ejemplo, supongamos que un archivo tenga que realizar acciones en el sistema pertenecientes al grupo `audio` pero nosotros no estamos en ese grupo, pues bien si ejecutamos el programa con `g+s` entonces lo haremos como parte de ese grupo.
+
+- Sobre un directorio: Hace que cuando se cree un archivo, se hereden a este archivo los permisos del grupo de la carpeta, no los permisos del grupo al que pertenece el usuario, esto nos permite tener más uniformidad a la hora de crear archivos en carpetas compartidas, sino estuviese esta opción, cada archivo creado pertenecería al grupo de la persona en cuestión, mientras que con esto queda más uniforme, todos los archivos creados por usuarios diferentes pertenecen al mismo grupo.
+
+Funciona sustituyendo la `x` del grupo del grupo por una `s`
+
+```bash
+drwxrws---
+```
+
+`sticky`
+
+Actua sobre directorios compartidos, hace que solo los usuarios propietarios de un archivo puedan borrarlo o renombrarlo, aunque todos los uaurios que accedan a este directorio tengan permisos de escritura y lectura (777).
+
+Se usa sobretodo el carpetas de acceso global a todos los usuarios como `/tmp` y se define sustituyendo la última `x` (grupo otros) por una `t`
+
+```bash
+rwxrwxrwt
+```
+
+```bash
+// Podemos definir estos permisos con octal
+chmod 4677
+chmod 2444
+chmod 1777
+
+// O con simbólicos
+chmod u+s nombre_archivo
+chmod g+s nombre_directorio_archivo
+chmod +t nombre_archivo
+```
