@@ -101,3 +101,9 @@ Este comando está pensado generalmente para programas ejecutables en los que en
 ```bash
 -rwsr-x---
 ```
+
+Si por ejemplo queremos como usuario normal sin permisos modificar la contraseña de nuestra cuenta, esa acción, aunque no tengamos permisos de administración, necesitará de permisos de administración en algún momento para poder realizar la acción. Para esto precisamente se necesita este `id`
+
+`setgid`
+
+Este comando tiene dos posibles definiciones, cuando actua sobre un fichero y cuando actua sobre un directorio.
