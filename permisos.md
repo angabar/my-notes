@@ -1,6 +1,6 @@
 # Permisos
 
-Los permisos en Linux se dividen en tres, usuarios, gurpos y el resto. El usuario es aquel que tiene como propiedad un archivo o directorio, el grupo es el conjunto de usuarios y el resto es el conjunto de usuarios que acceden al sistema sin pertenecer a un grupo ni ser propietarios del archivo o directorio.
+Los permisos en Linux se dividen en tres, usuarios, grupos y el resto. El usuario es aquel que tiene como propiedad un archivo o directorio, el grupo es el conjunto de usuarios y el resto es el conjunto de usuarios que acceden al sistema sin pertenecer a un grupo ni ser propietarios del archivo o directorio.
 
 Además de estos existen también otros usuarios creados por el sistema para el mantenimiento del mismo así como para tareas de administración.
 
@@ -19,14 +19,14 @@ Para representar estos permisos Linux define los siguientes símbolos:
 - `b` Un bloque de archivos especiales
 
 | **Usuario** | **Grupo** | **El resto** |
-| ----------- | --------- | ------------ |
-| `rwx`       | `rwx`     | `rwx`        |
+| --- | --- | --- |
+| `rwx` | `rwx` | `rwx` |
 
-| **Comando** | **Archivo**                                                                                                                    | **Directorio**                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `r`         | Puede ser abierto o leído                                                                                                      | Se puede listar el contenido pero necesita del permiso adicional de `x` para ver la información de cada archivo |
-| `w`         | Puede ser escrito o modificado pero no puede ser borrado o renombrado salvo que `w` se defina en el directorio que lo contiene | Se pueden borrar, modificar los archivos del directorio siempre que `x` esté definido en este                   |
-| `x`         | Permite la ejecución del archivo como programa, si es un script, tendrá que tener permisos de `r` también                      | Permite el acceso al directorio y poder realizar cualquier operación sobre este                                 |
+| **Comando** | **Archivo** | **Directorio** |
+| --- | --- | --- |
+| `r` | Puede ser abierto o leído | Se puede listar el contenido pero necesita del permiso adicional de `x` para ver la información de cada archivo |
+| `w` | Puede ser escrito o modificado pero no puede ser borrado o renombrado salvo que `w` se defina en el directorio que lo contiene | Se pueden borrar, modificar los archivos del directorio siempre que `x` esté definido en este |
+| `x` | Permite la ejecución del archivo como programa, si es un script, tendrá que tener permisos de `r` también | Permite el acceso al directorio y poder realizar cualquier operación sobre este |
 
 `chmod`
 
@@ -36,15 +36,15 @@ Para definir los permisos de un archivo o directorio, usamos el comando `chmod` 
 
 Usa la numeración en base 8 para definir los permisos, los diferentes valores posibles se definen en la siguiente tabla.
 
-| 0   | 000 | `---` |
-| --- | --- | ----- |
-| 1   | 001 | `--x` |
-| 2   | 010 | `-w-` |
-| 3   | 011 | `-wx` |
-| 4   | 100 | `r--` |
-| 5   | 101 | `r-x` |
-| 6   | 110 | `rw-` |
-| 7   | 111 | `rwx` |
+| 0 | 000 | `---` |
+| --- | --- | --- |
+| 1 | 001 | `--x` |
+| 2 | 010 | `-w-` |
+| 3 | 011 | `-wx` |
+| 4 | 100 | `r--` |
+| 5 | 101 | `r-x` |
+| 6 | 110 | `rw-` |
+| 7 | 111 | `rwx` |
 
 ```bash
 // rw------x
@@ -106,10 +106,9 @@ Si por ejemplo queremos como usuario normal sin permisos modificar la contraseñ
 
 `setgid`
 
-Este comando tiene dos posibles definiciones, cuando actua sobre un fichero y cuando actua sobre un directorio.
+Este comando tiene dos posibles definiciones, cuando actúa sobre un fichero y cuando actúa sobre un directorio.
 
 - Sobre un archivo: Hace que cuando se ejecute el programa lo haga usando los permisos del grupo del archivo, no del grupo del usuario, permitiendo dar más libertad de acción al usuario, pero sin llegar a otorgarle permisos de administrador. Por ejemplo, supongamos que un archivo tenga que realizar acciones en el sistema pertenecientes al grupo `audio` pero nosotros no estamos en ese grupo, pues bien si ejecutamos el programa con `g+s` entonces lo haremos como parte de ese grupo.
-
 - Sobre un directorio: Hace que cuando se cree un archivo, se hereden a este archivo los permisos del grupo de la carpeta, no los permisos del grupo al que pertenece el usuario, esto nos permite tener más uniformidad a la hora de crear archivos en carpetas compartidas, sino estuviese esta opción, cada archivo creado pertenecería al grupo de la persona en cuestión, mientras que con esto queda más uniforme, todos los archivos creados por usuarios diferentes pertenecen al mismo grupo.
 
 Funciona sustituyendo la `x` del grupo del grupo por una `s`
@@ -120,7 +119,7 @@ drwxrws---
 
 `sticky`
 
-Actua sobre directorios compartidos, hace que solo los usuarios propietarios de un archivo puedan borrarlo o renombrarlo, aunque todos los uaurios que accedan a este directorio tengan permisos de escritura y lectura (777).
+Actúa sobre directorios compartidos, hace que solo los usuarios propietarios de un archivo puedan borrarlo o renombrarlo, aunque todos los usuarios que accedan a este directorio tengan permisos de escritura y lectura (777).
 
 Se usa sobretodo el carpetas de acceso global a todos los usuarios como `/tmp` y se define sustituyendo la última `x` (grupo otros) por una `t`
 
@@ -139,3 +138,82 @@ chmod u+s nombre_archivo
 chmod g+s nombre_directorio_archivo
 chmod +t nombre_archivo
 ```
+
+`su`
+
+Con el comando `su` podemos utilizar la cuenta de un usuario determinado, siempre que sepamos su contraseña en caso de tenerla claro. Útil para probar que puede o no hacer el usuario desde el terminal, no es una simulación completa, solo desde la pestaña del terminal en el que estemos.
+
+Sino especificamos ninguna opción, el *shell* intentará registrarse como administrador pero es importante tener en cuenta que la contraseña que nos pedirá no es la del usuario administrador, sino de la *root* definida para la distribución de Linux que estemos usando.
+
+Cuando estemos como *root* el cursor del terminal cambiará por un `#` y el *home* de este pasará a ser la carpeta `/`
+
+Podemos pasar el comando `-` a `su` para además de emular el estado del usuario en el terminal, emular también algunos otros aspectos como sus variables de entorno.
+
+Podemos además lanzar solo un comando como `su` con la opción `-c` pero ojo, procura que el comando esté entre comillas simples o de lo contrario expandirá al terminal del otro usuario.
+
+```bash
+su -c 'rm -r /etc'
+```
+
+`sudo`
+
+Este comando nos permite lanzar comandos como un usuario alternativo, difiere de `su` en que no sustituye todo un *shell* sino que solo lanza un comando.
+
+La ventaja que tiene `sudo` es que podemos hacer que actúe como *root* sin que el usuario sea *root*. Por defecto cuando configuramos nuestro sistema Linux, el usuario que usamos para instalarlo tiene permisos para actuar como *root* pero no es *root*, esto lo hace Linux añadiendo a nuestro usuario a un directorio llamado `sudoers` archivo sobre el que podemos actuar nosotros como *root* para modificarlo y hacer que otros usuarios también actúen como *root* total o parcialmente.
+
+Es decir, podemos crear un usuario para que pueda hacer `sudo apt update` pero que no tenga permitido `sudo gedit /etc/resolv.conf`
+
+```bash
+// sudoers
+Cmnd_Alias MANTENIMIENTO = /usr/bin/apt update, \
+                           /usr/bin/apt upgrade, \
+                           /usr/sbin/reboot, \
+                           /usr/sbin/poweroff
+
+operario ALL=(root) MANTENIMIENTO
+
+// El usuario "operario" puede hacer
+sudo apt update
+```
+
+Por eso cuando hacemos `sudo su` lo que hacemos en realidad es ejecutar `su` sin argumentos con nuestro usuario con permisos de *root* sin serlo realmente.
+
+```bash
+// Cuenta administrador
+whoami // enric
+
+// root
+whoami // root
+```
+
+`chown`
+
+Con el comando `chown` podemos modificar el propietario o grupo al que pertenece un archivo o directorio, para lanzarlo se requieren permisos de *root*.
+
+El formato que sigue es `user:group` no obstante, puede omitirse tanto el usuario como el grupo siendo los dos puntos un caso algo particular.
+
+```bash
+user # Se cambia solo el usario
+
+user: # Se cambia el usuario y el grupo pasando a ser ambos el usuario
+
+:group # Se cambia el grupo pero no el usuario
+
+user:group # Se cambia el usuario y el grupo
+```
+
+`passwd`
+
+Con el comando `passwd` podemos cambiar nuestra contraseña de usuario, y si somos administradores podemos además, modificar la contraseña de un usuario concreto.
+
+**Puntos adicionales**
+
+Como comandos adicionales conviene ver los siguientes:
+
+| `useradd` | Crea un usuario o modifica uno existente con información nueva |
+| --- | --- |
+| `userdel` | Borra un usuario y sus archivos |
+| `usermod` | Modifica una cuenta de usuario |
+| `groupadd` | Crea un nuevo grupo |
+| `groupdel` | Borra un grupo |
+| `groupmod` | Modifica un grupo |
