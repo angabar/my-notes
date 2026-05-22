@@ -23,6 +23,7 @@ export default defineConfig({
             {
                 text: "Redirecciones",
                 items: [
+                    { text: "Información", link: "/information" },
                     { text: "Redirecciones", link: "/redirecciones" },
                     { text: "Estudio del terminal", link: "/terminal_study" },
                     { text: "Permisos", link: "/permisos" },
