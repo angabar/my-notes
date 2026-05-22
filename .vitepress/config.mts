@@ -26,6 +26,7 @@ export default defineConfig({
                     { text: "Redirecciones", link: "/redirecciones" },
                     { text: "Estudio del terminal", link: "/terminal_study" },
                     { text: "Permisos", link: "/permisos" },
+                    { text: "Procesos", link: "/procesos" },
                 ],
             },
         ],
